@@ -1,6 +1,6 @@
 import React, {Component} from "react"
 
-class Filters extends Component {
+class Blank extends Component {
   constructor(props, context) {
     super(props)
 
@@ -17,4 +17,4 @@ class Filters extends Component {
   }
 }
 
-export default Filters
+export default Blank

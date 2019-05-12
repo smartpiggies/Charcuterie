@@ -12,6 +12,8 @@ import AuthLayout from "../layouts/Auth";
 
 import ScrollToTop from "../components/ScrollToTop";
 
+//<ChildRoutes layout={LandingLayout} routes={landingRoutes} />
+
 const ChildRoutes = ({ layout: Layout, routes }) => (
   <Layout>
     <Switch>
@@ -49,7 +51,7 @@ const Routes = () => (
           path="/"
           exact
           component={() => (
-            <ChildRoutes layout={LandingLayout} routes={landingRoutes} />
+            <ChildRoutes layout={DashboardLayout} routes={dashboardRoutes} />
           )}
         />
 

@@ -10,9 +10,15 @@ import Appointments from "./Appointments";
 import Projects from "./Projects";
 import BarChart from "./BarChart";
 
+import PiggyTable from '../../../components/PiggyTable'
+
 const Default = () => (
   <Container fluid className="p-0">
     <Statistics />
+
+    <PiggyTable />
+
+    {/*
     <Row>
       <Col lg="8" className="d-flex">
         <LineChart />
@@ -39,7 +45,7 @@ const Default = () => (
       <Col lg="6" xl="4" className="d-flex">
         <BarChart />
       </Col>
-    </Row>
+    </Row> */}
   </Container>
 );
 

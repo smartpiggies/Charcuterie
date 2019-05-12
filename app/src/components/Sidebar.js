@@ -12,6 +12,8 @@ import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import routes from "../routes/index";
 import avatar from "../assets/img/avatars/avatar.jpg";
 
+import Filters from "../components/Filters.js"
+
 const SidebarCategory = withRouter(
   ({
     name,
@@ -121,9 +123,14 @@ class Sidebar extends React.Component {
           <PerfectScrollbar>
             <a className="sidebar-brand" href="/">
               <Box className="align-middle text-primary mr-2" size={24} />{" "}
-              <span className="align-middle">AppStack</span>
+              <span className="align-middle">Charcuterie</span>
             </a>
 
+            <div className='sidebar-header'>
+              <Filters />
+            </div>
+
+            {/*
             <ul className="sidebar-nav">
               {routes.map((category, index) => {
                 return (
@@ -164,9 +171,9 @@ class Sidebar extends React.Component {
                   </React.Fragment>
                 );
               })}
-            </ul>
+            </ul> */}
 
-            {!layout.isBoxed && !sidebar.isSticky ? (
+            {/* {!layout.isBoxed && !sidebar.isSticky ? (
               <div className="sidebar-bottom d-none d-lg-block">
                 <div className="media">
                   <img
@@ -188,7 +195,7 @@ class Sidebar extends React.Component {
                   </div>
                 </div>
               </div>
-            ) : null}
+            ) : null} */}
           </PerfectScrollbar>
         </div>
       </nav>

@@ -11,11 +11,11 @@ import Projects from "./Projects";
 import BarChart from "./BarChart";
 
 import PiggyTable from '../../../components/PiggyTable'
+import PiggyStats from "../../../components/PiggyStats";
 
 const Default = () => (
   <Container fluid className="p-0">
-    <Statistics />
-
+    <PiggyStats />
     <PiggyTable />
 
     {/*

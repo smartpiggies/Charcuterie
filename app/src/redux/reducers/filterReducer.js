@@ -17,47 +17,65 @@ export default function reducer(state = initialState, actions) {
     case types.AUCTION_FILTERS_ALL:
       return {
         ...state,
-        isAuctionAll: !state.isAuctionAll
+        isAuctionAll: true,
+        isAuctionForSale: false,
+        isAuctionNotForSale: false,
       }
     case types.AUCTION_FILTERS_FOR_SALE:
       return {
         ...state,
-        isAuctionForSale: !state.isAuctionForSale
+        isAuctionAll: false,
+        isAuctionForSale: true,
+        isAuctionNotForSale: false,
       }
     case types.AUCTION_FILTERS_NOT_FOR_SALE:
       return {
         ...state,
-        isAuctionNotForSale: !state.isAuctionNotForSale
+        isAuctionAll: false,
+        isAuctionForSale: false,
+        isAuctionNotForSale: true,
       }
     case types.PUTCALL_FILTERS_ALL:
       return {
         ...state,
-        isPutCallAll: !state.isPutCallAll
+        isPutCallAll: true,
+        isPutOnly: false,
+        isCallOnly: false,
       }
     case types.PUTCALL_FILTERS_PUT:
       return {
         ...state,
-        isPutOnly: !state.isPutOnly
+        isPutCallAll: false,
+        isPutOnly: true,
+        isCallOnly: false,
       }
-    case types.PUTCALL_FILTERS_PUT:
+    case types.PUTCALL_FILTERS_CALL:
       return {
         ...state,
-        isCallOnly: !state.isCallOnly
+        isPutCallAll: false,
+        isPutOnly: false,
+        isCallOnly: true,
       }
     case types.EXPIRY_FILTERS_ALL:
       return {
         ...state,
-        isExpiryAll: !state.isExpiryAll
+        isExpiryAll: true,
+        isExpiredOnly: false,
+        isNotExpired: false
       }
     case types.EXPIRY_FILTERS_EXPIRED:
       return {
         ...state,
-        isExpiredOnly: !state.isExpiredOnly
+        isExpiryAll: false,
+        isExpiredOnly: true,
+        isNotExpired: false
       }
     case types.EXPIRY_FILTERS_NOT_EXPIRED:
       return {
         ...state,
-        isNotExpired: !state.isNotExpired
+        isExpiryAll: false,
+        isExpiredOnly: false,
+        isNotExpired: true
       }
 
     default:

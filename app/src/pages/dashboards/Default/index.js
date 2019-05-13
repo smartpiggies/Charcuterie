@@ -1,6 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
-import { tableFilters } from "../redux/actions/filterActions";
 
 import { Container, Row, Col } from "reactstrap";
 
@@ -52,4 +50,4 @@ const Default = () => (
   </Container>
 );
 
-export default connect(store => ({ app: store.app }))(Default);
+export default Default;

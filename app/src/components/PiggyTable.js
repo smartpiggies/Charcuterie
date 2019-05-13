@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Card, CardBody, CardHeader, CardTitle, Container } from "reactstrap";
 
 import BootstrapTable from "react-bootstrap-table-next";
@@ -9,6 +10,7 @@ import { MinusCircle, PlusCircle } from "react-feather";
 
 const tableData = [
   {
+    id: "1",
     putcall: "Put",
     strike: 195.00,
     collateral: 1000,
@@ -18,6 +20,7 @@ const tableData = [
     auctionExpiry: '2019/05/15'
   },
   {
+    id: "2",
     putcall: "Call",
     strike: 190.00,
     collateral: 1000,
@@ -27,6 +30,7 @@ const tableData = [
     auctionExpiry: '2019/05/15'
   },
   {
+    id: "3",
     putcall: "Put",
     strike: 195.00,
     collateral: 2500,
@@ -36,6 +40,7 @@ const tableData = [
     auctionExpiry: '2019/05/15'
   },
   {
+    id: "4",
     putcall: "Put",
     strike: 205.00,
     collateral: 1500,
@@ -45,6 +50,7 @@ const tableData = [
     auctionExpiry: '2019/05/30'
   },
   {
+    id: "5",
     putcall: "Call",
     strike: 195.00,
     collateral: 1000,
@@ -54,6 +60,7 @@ const tableData = [
     auctionExpiry: '-'
   },
   {
+    id: "6",
     putcall: "Put",
     strike: 195.00,
     collateral: 1000,
@@ -63,6 +70,7 @@ const tableData = [
     auctionExpiry: '2019/05/15'
   },
   {
+    id: "7",
     putcall: "Put",
     strike: 195.00,
     collateral: 1000,
@@ -72,6 +80,7 @@ const tableData = [
     auctionExpiry: '2019/05/15'
   },
   {
+    id: "8",
     putcall: "Put",
     strike: 195.00,
     collateral: 1000,
@@ -81,6 +90,7 @@ const tableData = [
     auctionExpiry: '2019/05/15'
   },
   {
+    id: "9",
     putcall: "Put",
     strike: 195.00,
     collateral: 1000,
@@ -90,6 +100,7 @@ const tableData = [
     auctionExpiry: '2019/05/15'
   },
   {
+    id: "10",
     putcall: "Put",
     strike: 195.00,
     collateral: 1000,
@@ -139,55 +150,80 @@ const tableColumns = [
 ];
 
 
-const PiggyTableExpandable = () => {
-  const expandRow = {
-    renderer: row => (
-      <div>
-        <p>{`This Expand row is belong to "${row.putcall}"`}</p>
-        <p>
-          You can render anything here, also you can add additional data on every row object.
-        </p>
-      </div>
-    ),
-    showExpandColumn: true,
-    expandHeaderColumnRenderer: ({ isAnyExpands }) =>
-      isAnyExpands ? (
-        <MinusCircle width={16} height={16} />
-      ) : (
-        <PlusCircle width={16} height={16} />
+class PiggyTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  render() {
+    console.log(this.props)
+    const expandRow = {
+      renderer: row => (
+        <div>
+          <p>{`This Expand row is belong to "${row.id}"`}</p>
+          <p>
+            You can render anything here, also you can add additional data on every row object.
+          </p>
+        </div>
       ),
-    expandColumnRenderer: ({ expanded }) =>
-      expanded ? (
-        <MinusCircle width={16} height={16} />
-      ) : (
-        <PlusCircle width={16} height={16} />
-      )
-  };
+      showExpandColumn: true,
+      expandHeaderColumnRenderer: ({ isAnyExpands }) =>
+        isAnyExpands ? (
+          <MinusCircle width={16} height={16} />
+        ) : (
+          <PlusCircle width={16} height={16} />
+        ),
+      expandColumnRenderer: ({ expanded }) =>
+        expanded ? (
+          <MinusCircle width={16} height={16} />
+        ) : (
+          <PlusCircle width={16} height={16} />
+        )
+    };
 
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle tag="h5">Charcuterie Sampler</CardTitle>
-        <h6 className="card-subtitle text-muted">
-          Filter Piggies using the controls on the left
-        </h6>
-      </CardHeader>
-      <CardBody>
-        <BootstrapTable
-          bootstrap4
-          bordered={false}
-          keyField="putcall"
-          data={tableData}
-          columns={tableColumns}
-          expandRow={expandRow}
-          pagination={paginationFactory({
-            sizePerPage: 5,
-            sizePerPageList: [5, 10, 25, 50]
-          })}
-        />
-      </CardBody>
-    </Card>
-  );
-};
+    return (
 
-export default PiggyTableExpandable;
+      <Card>
+        <CardHeader>
+          <CardTitle tag="h5">Charcuterie Sampler</CardTitle>
+          <h6 className="card-subtitle text-muted">
+            Filter Piggies using the controls on the left
+          </h6>
+        </CardHeader>
+        <CardBody>
+          <BootstrapTable
+            bootstrap4
+            bordered={false}
+            keyField="id"
+            data={tableData}
+            columns={tableColumns}
+            expandRow={expandRow}
+            pagination={paginationFactory({
+              sizePerPage: 5,
+              sizePerPageList: [5, 10, 25, 50]
+            })}
+          />
+        </CardBody>
+      </Card>
+    )
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+    auctionAll: state.filters.isAuctionAll,
+    forSale: state.filters.isAuctionForSale,
+    notForSale: state.filters.isAuctionNotForSale,
+
+    directionAll: state.filters.isPutCallAll,
+    putOnly: state.filters.isPutOnly,
+    callOnly: state.filters.isCallOnly,
+
+    expiryAll: state.filters.isExpiryAll,
+    onlyExpired: state.filters.isExpiredOnly,
+    notExpired: state.filters.isNotExpired,
+  }
+}
+
+export default connect(mapStateToProps)(PiggyTable);

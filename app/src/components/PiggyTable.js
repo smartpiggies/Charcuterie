@@ -150,6 +150,48 @@ const tableColumns = [
   }
 ];
 
+const piggyColumns = [
+  {
+    dataField: "tokenId",
+    text: "piggy #",
+    sort: true
+  },
+  {
+    dataField: "putcall",
+    text: "Put/Call",
+    sort: true
+  },
+  {
+    dataField: "strike",
+    text: "Strike Price",
+    sort: true
+  },
+  {
+    dataField: "collateral",
+    text: "Collateral",
+    sort: true
+  },
+  {
+    dataField: "multiplier",
+    text: "Multiplier",
+    sort: true
+  },
+  {
+    dataField: "piggyExpiry",
+    text: "Maturity",
+    sort: true
+  },
+  {
+    dataField: "price",
+    text: "Price",
+    sort: true
+  },
+  {
+    dataField: "auctionExpiry",
+    text: "Auction Expiry",
+    sort: true
+  }
+];
 
 class PiggyTable extends React.Component {
   constructor(props) {
@@ -164,6 +206,9 @@ class PiggyTable extends React.Component {
   }
 
   render() {
+    console.log(this.props.piggies)
+    let displayPiggies = this.props.piggies
+
     let displayData
     if (this.props.putOnly) {
       displayData = tableData.filter(row => row.putcall === "Put")
@@ -174,7 +219,7 @@ class PiggyTable extends React.Component {
     if (this.props.directionAll) {
       displayData = tableData
     }
-    console.log(displayData)
+
     /**
     displayData = tableData.map(item => {
       console.log("displayData")
@@ -262,6 +307,29 @@ class PiggyTable extends React.Component {
             })}
           />
         </CardBody>
+
+        <div>
+        <CardHeader>
+          <CardTitle tag="h5">Piggies From Graph</CardTitle>
+          <h6 className="card-subtitle text-muted">
+            Filter Piggies using the controls on the left
+          </h6>
+        </CardHeader>
+        <CardBody>
+          <BootstrapTable
+            bootstrap4
+            bordered={false}
+            keyField="id"
+            data={displayPiggies.createPiggies}
+            columns={piggyColumns}
+
+            pagination={paginationFactory({
+              sizePerPage: 5,
+              sizePerPageList: [5, 10, 25, 50]
+            })}
+          />
+        </CardBody>
+        </div>
       </Card>
     )
   }

@@ -143,7 +143,7 @@ const PiggyTableExpandable = () => {
   const expandRow = {
     renderer: row => (
       <div>
-        <p>{`This Expand row is belong to "${row.name}"`}</p>
+        <p>{`This Expand row is belong to "${row.putcall}"`}</p>
         <p>
           You can render anything here, also you can add additional data on every row object.
         </p>
@@ -176,7 +176,7 @@ const PiggyTableExpandable = () => {
         <BootstrapTable
           bootstrap4
           bordered={false}
-          keyField="name"
+          keyField="putcall"
           data={tableData}
           columns={tableColumns}
           expandRow={expandRow}

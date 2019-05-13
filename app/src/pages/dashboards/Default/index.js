@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Container, Row, Col } from "reactstrap";
 
 import Statistics from "./Statistics";
@@ -49,4 +50,4 @@ const Default = () => (
   </Container>
 );
 
-export default Default;
+export default connect(store => {})(Default);

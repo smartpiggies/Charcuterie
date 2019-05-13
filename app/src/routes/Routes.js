@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import {
+  mainLanding as mainRoutes,
   landing as landingRoutes,
   dashboard as dashboardRoutes,
   page as pageRoutes
@@ -51,7 +52,7 @@ const Routes = () => (
           path="/"
           exact
           component={() => (
-            <ChildRoutes layout={DashboardLayout} routes={dashboardRoutes} />
+            <ChildRoutes layout={DashboardLayout} routes={mainRoutes} />
           )}
         />
 

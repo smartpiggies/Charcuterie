@@ -93,6 +93,20 @@ const VectorMaps = async(() => import("../pages/maps/VectorMaps"));
 const GoogleMaps = async(() => import("../pages/maps/GoogleMaps"));
 
 // Routes
+const mainRoutes = {
+  name: "Dashboard",
+  header: "Main",
+  icon: SlidersIcon,
+  containsHome: true,
+  children: [
+    {
+      path: "/",
+      name: "Default",
+      component: Default
+    },
+  ]
+};
+
 const landingRoutes = {
   path: "/",
   name: "Landing Page",
@@ -463,6 +477,8 @@ export const dashboard = [
   calendarRoutes,
   mapRoutes
 ];
+
+export const mainLanding = [mainRoutes]
 
 // Landing specific routes
 export const landing = [landingRoutes];

@@ -153,34 +153,42 @@ const tableColumns = [
 class PiggyTable extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isMounted: false
+    };
+  }
+
+  componentDidMount() {
+    this.setState({ isMounted: true })
   }
 
   render() {
-    console.log(this.props)
-    const expandRow = {
-      renderer: row => (
-        <div>
-          <p>{`This Expand row is belong to "${row.id}"`}</p>
-          <p>
-            You can render anything here, also you can add additional data on every row object.
-          </p>
-        </div>
-      ),
-      showExpandColumn: true,
-      expandHeaderColumnRenderer: ({ isAnyExpands }) =>
-        isAnyExpands ? (
-          <MinusCircle width={16} height={16} />
-        ) : (
-          <PlusCircle width={16} height={16} />
+    let expandRow
+    if (this.state.isMounted) {
+      expandRow = {
+        renderer: row => (
+          <div>
+            <p>{`This Expand row is belong to "${row.id}"`}</p>
+            <p>
+              You can render anything here, also you can add additional data on every row object.
+            </p>
+          </div>
         ),
-      expandColumnRenderer: ({ expanded }) =>
-        expanded ? (
-          <MinusCircle width={16} height={16} />
-        ) : (
-          <PlusCircle width={16} height={16} />
-        )
-    };
+        showExpandColumn: true,
+        expandHeaderColumnRenderer: ({ isAnyExpands }) =>
+          isAnyExpands ? (
+            <MinusCircle width={16} height={16} />
+          ) : (
+            <PlusCircle width={16} height={16} />
+          ),
+        expandColumnRenderer: ({ expanded }) =>
+          expanded ? (
+            <MinusCircle width={16} height={16} />
+          ) : (
+            <PlusCircle width={16} height={16} />
+          )
+      };
+    }
 
     return (
 
@@ -226,4 +234,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(PiggyTable);
+export default connect(mapStateToProps, null)(PiggyTable);

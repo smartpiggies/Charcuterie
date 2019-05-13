@@ -29,16 +29,18 @@ import {
 /* actions */
 import * as filterActionCreators    from '../redux/actions/filterActions';
 
+
+
 class Filters extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
+    
     }
   }
 
   render() {
-    
+
     const { filters } = this.props.actions
 
     return (

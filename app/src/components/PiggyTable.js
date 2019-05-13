@@ -9,6 +9,7 @@ import { MinusCircle, PlusCircle } from "react-feather";
 
 const tableData = [
   {
+    id: 1,
     putcall: "Put",
     strike: 195.00,
     collateral: 1000,
@@ -18,6 +19,7 @@ const tableData = [
     auctionExpiry: '2019/05/15'
   },
   {
+    id: 2,
     putcall: "Call",
     strike: 190.00,
     collateral: 1000,
@@ -27,6 +29,7 @@ const tableData = [
     auctionExpiry: '2019/05/15'
   },
   {
+    id: 3,
     putcall: "Put",
     strike: 195.00,
     collateral: 2500,
@@ -36,6 +39,7 @@ const tableData = [
     auctionExpiry: '2019/05/15'
   },
   {
+    id: 4,
     putcall: "Put",
     strike: 205.00,
     collateral: 1500,
@@ -45,6 +49,7 @@ const tableData = [
     auctionExpiry: '2019/05/30'
   },
   {
+    id: 5,
     putcall: "Call",
     strike: 195.00,
     collateral: 1000,
@@ -54,6 +59,7 @@ const tableData = [
     auctionExpiry: '-'
   },
   {
+    id: 6,
     putcall: "Put",
     strike: 195.00,
     collateral: 1000,
@@ -63,6 +69,7 @@ const tableData = [
     auctionExpiry: '2019/05/15'
   },
   {
+    id: 7,
     putcall: "Put",
     strike: 195.00,
     collateral: 1000,
@@ -72,6 +79,7 @@ const tableData = [
     auctionExpiry: '2019/05/15'
   },
   {
+    id: 8,
     putcall: "Put",
     strike: 195.00,
     collateral: 1000,
@@ -81,6 +89,7 @@ const tableData = [
     auctionExpiry: '2019/05/15'
   },
   {
+    id: 9,
     putcall: "Put",
     strike: 195.00,
     collateral: 1000,
@@ -90,6 +99,7 @@ const tableData = [
     auctionExpiry: '2019/05/15'
   },
   {
+    id: 10,
     putcall: "Put",
     strike: 195.00,
     collateral: 1000,
@@ -97,10 +107,15 @@ const tableData = [
     piggyExpiry: "2019/06/30",
     price: 45.00,
     auctionExpiry: '2019/05/15'
-  },
+  }
 ];
 
 const tableColumns = [
+  {
+      dataField: "id",
+      text: "ID",
+      sort: true
+  },
   {
     dataField: "putcall",
     text: "Put/Call",
@@ -143,7 +158,7 @@ const PiggyTableExpandable = () => {
   const expandRow = {
     renderer: row => (
       <div>
-        <p>{`This Expand row is belong to "${row.name}"`}</p>
+        <p>{`This Expand row is belong to "${row.id}"`}</p>
         <p>
           You can render anything here, also you can add additional data on every row object.
         </p>
@@ -176,7 +191,7 @@ const PiggyTableExpandable = () => {
         <BootstrapTable
           bootstrap4
           bordered={false}
-          keyField="name"
+          keyField="id"
           data={tableData}
           columns={tableColumns}
           expandRow={expandRow}

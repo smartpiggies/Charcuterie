@@ -7,8 +7,9 @@ import ToolkitProvider from "react-bootstrap-table2-toolkit";
 import paginationFactory from "react-bootstrap-table2-paginator";
 
 import { MinusCircle, PlusCircle } from "react-feather";
+//expandRow={expandRow}
 
-const tableData = [
+let tableData = [
   {
     id: "1",
     putcall: "Put",
@@ -163,6 +164,53 @@ class PiggyTable extends React.Component {
   }
 
   render() {
+    let displayData
+    if (this.props.putOnly) {
+      displayData = tableData.filter(row => row.putcall === "Put")
+    }
+    if (this.props.callOnly) {
+      displayData = tableData.filter(row => row.putcall === "Call")
+    }
+    if (this.props.directionAll) {
+      displayData = tableData
+    }
+    console.log(displayData)
+    /**
+    displayData = tableData.map(item => {
+      console.log("displayData")
+      if (this.props.putOnly) {
+        return (
+          item.putcall === "put" ? item :   {
+              id: "",
+              putcall: "",
+              strike: 0,
+              collateral: 0,
+              multiplier: 0,
+              piggyExpiry: "",
+              price: '-',
+              auctionExpiry: '-'
+            }
+        )
+      } else if (this.props.callOnly) {
+        return (
+          item.putcall === "call" ? item : {
+              id: "",
+              putcall: "",
+              strike: 0,
+              collateral: 0,
+              multiplier: 0,
+              piggyExpiry: "",
+              price: '-',
+              auctionExpiry: '-'
+            }
+        )
+      } else {
+        return (
+          item
+        )
+      }
+    })
+    **/
     let expandRow
     if (this.state.isMounted) {
       expandRow = {
@@ -178,6 +226,7 @@ class PiggyTable extends React.Component {
         expandHeaderColumnRenderer: ({ isAnyExpands }) =>
           isAnyExpands ? (
             <MinusCircle width={16} height={16} />
+
           ) : (
             <PlusCircle width={16} height={16} />
           ),
@@ -204,9 +253,9 @@ class PiggyTable extends React.Component {
             bootstrap4
             bordered={false}
             keyField="id"
-            data={tableData}
+            data={displayData}
             columns={tableColumns}
-            expandRow={expandRow}
+
             pagination={paginationFactory({
               sizePerPage: 5,
               sizePerPageList: [5, 10, 25, 50]

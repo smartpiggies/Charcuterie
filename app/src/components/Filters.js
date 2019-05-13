@@ -35,7 +35,7 @@ class Filters extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-    
+
     }
   }
 
@@ -57,7 +57,7 @@ class Filters extends React.Component {
               {/* Radios */}
 
               <h4>Auction Filters</h4>
-              <AvRadioGroup name="radioCustomInputExample" required>
+              <AvRadioGroup name="AuctionsRadio" required>
                 <AvRadio
                   customInput label="All Auctions"
                   value="AllAuctions"
@@ -76,7 +76,7 @@ class Filters extends React.Component {
               </AvRadioGroup>
 
               <h4>Put / Call Filters</h4>
-              <AvRadioGroup name="radioCustomInputExample" required>
+              <AvRadioGroup name="DirectionsRadio" required>
                 <AvRadio
                   customInput label="All Directions"
                   value="AllDirections"
@@ -95,7 +95,7 @@ class Filters extends React.Component {
               </AvRadioGroup>
 
               <h4>Expiry Filters</h4>
-              <AvRadioGroup name="radioCustomInputExample" required>
+              <AvRadioGroup name="ExpirationRadio" required>
                 <AvRadio
                   customInput label="All Expires"
                   value="AllExpires"

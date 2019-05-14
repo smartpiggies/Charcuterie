@@ -31,7 +31,13 @@ const PIGGY_QUERY = gql`
       id
       from
       tokenId
+      collateral
+      lotSize
       strike
+      expiryBlock
+      isEuro
+      isPut
+      RFP
     }
   }
 `

@@ -157,7 +157,12 @@ const piggyColumns = [
     sort: true
   },
   {
-    dataField: "putcall",
+    dataField: "isEuro",
+    text: "Style",
+    sort: true
+  },
+  {
+    dataField: "isPut",
     text: "Put/Call",
     sort: true
   },
@@ -172,12 +177,12 @@ const piggyColumns = [
     sort: true
   },
   {
-    dataField: "multiplier",
+    dataField: "lotSize",
     text: "Multiplier",
     sort: true
   },
   {
-    dataField: "piggyExpiry",
+    dataField: "expiryBlock",
     text: "Maturity",
     sort: true
   },

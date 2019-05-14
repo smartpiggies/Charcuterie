@@ -27,7 +27,7 @@ const client = new ApolloClient({
 
 const PIGGY_QUERY = gql`
   query piggies {
-    createPiggies {
+    createPiggies (skip: 5) {
       id
       from
       tokenId
@@ -39,6 +39,16 @@ const PIGGY_QUERY = gql`
       isPut
       RFP
     }
+    startAuctions {
+      id
+      from
+      tokenId
+      startPrice
+      reservePrice
+      auctionLength
+      timeStep
+      priceStep
+}
   }
 `
 

@@ -48,9 +48,34 @@ const PIGGY_QUERY = gql`
       auctionLength
       timeStep
       priceStep
-}
+    }
   }
 `
+
+function dataHandler(data) {
+  let toReturn = data['createPiggies']
+  let i;
+  for (i=0; i<toReturn.length; i++) {
+    //console.log('piggy ', i, data['createPiggies'][i])
+    // join auction data (in proper format)
+    toReturn[i]['auctionLength'] = data['startAuctions'][i]['auctionLength']
+    toReturn[i]['priceStep'] = data['startAuctions'][i]['priceStep']
+    toReturn[i]['reservePrice'] = data['startAuctions'][i]['reservePrice']
+    toReturn[i]['startPrice'] = data['startAuctions'][i]['startPrice']
+    toReturn[i]['timeStep'] = data['startAuctions'][i]['timeStep']
+    // calculate actual table values of interest
+    toReturn[i]['auctionExpiry'] = 'insufficient data to calc'
+    toReturn[i]['isEuro'] = toReturn['isEuro'] ? 'European' : 'American'
+    toReturn[i]['isPut'] = toReturn['isPut'] ? 'Put' : 'Call'
+    let strike = toReturn[i]['strike']
+    toReturn[i]['strike'] = '$' + strike.slice(0, strike.length - 2) + '.' + strike.slice(strike.length -2, strike.length)
+    toReturn[i]['price'] = 'insufficient data to calc'
+
+    // also reformat any auction fields that need to be reformatted
+
+  }
+  return(toReturn)
+}
 
 const Default = () => (
   <ApolloProvider client={client}>
@@ -61,6 +86,12 @@ const Default = () => (
       }}
     >
       {({ data, error, loading }) => {
+        //console.log('data:', data)
+        if (data['createPiggies'] !== undefined && data['createPiggies'].length > 0) {
+          let formatted = dataHandler(data)
+          //console.log('formatted: ', formatted)
+        }
+        
         return loading ? (
           <Alerts />
         ) : error ? (

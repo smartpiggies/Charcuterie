@@ -27,7 +27,7 @@ const client = new ApolloClient({
 
 const PIGGY_QUERY = gql`
   query piggies {
-    createPiggies (skip: 5) {
+    createPiggies {
       id
       from
       tokenId
@@ -76,6 +76,9 @@ function dataHandler(data) {
   }
   return(toReturn)
 }
+let tokenMap
+let auctionTokens
+let createdTokens
 
 const Default = () => (
   <ApolloProvider client={client}>
@@ -86,18 +89,64 @@ const Default = () => (
       }}
     >
       {({ data, error, loading }) => {
-        //console.log('data:', data)
+        console.log('data:', data)
         if (data['createPiggies'] !== undefined && data['createPiggies'].length > 0) {
-          let formatted = dataHandler(data)
+          //let formatted = dataHandler(data)
           //console.log('formatted: ', formatted)
+          createdTokens = data.createPiggies.map((item, i) => {
+            return (
+              {
+                token: item.tokenId,
+                details: {
+                  id: item.id,
+                  from: item.from,
+                  tokenId: item.tokenId,
+                  collateral: item.collateral,
+                  multiplier: item.lotSize,
+                  strike: item.strike,
+                  expiry: item.expiryBlock,
+                  isEuro: item.isEuro,
+                  isPut: item.isPut,
+                  rfp: item.RFP
+                }
+              }
+            )
+          })
+
+          tokenMap = createdTokens.map(item => {
+            if (data.startAuctions.tokenId === )
+          })
+
+          auctionTokens = data.startAuctions.map((item, i) => {
+            let token = createdTokens.find((created) => {
+              return (created.token === item.tokenId)
+            })
+            return (
+              {
+                token: item.tokenId,
+                details: {
+                  details: token.details
+                },
+                auction: {
+                  from: item.from,
+                  startBlock: item.startBlock,
+                  startPrice: item.startPrice,
+                  reservePrice: item.reservePrice,
+                  auctionLength: item.auctionLength,
+                  timeStep: item.timeStep,
+                  priceStep: item.priceStep
+                }
+              }
+            )
+          })
         }
-        
+
         return loading ? (
           <Alerts />
         ) : error ? (
           <Alerts />
         ) : (
-          <PiggyTable piggies={data} />
+          <PiggyTable piggies={createdTokens} />
         )
       }}
     </Query>

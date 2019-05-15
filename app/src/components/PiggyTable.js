@@ -325,7 +325,7 @@ class PiggyTable extends React.Component {
             bootstrap4
             bordered={false}
             keyField="id"
-            data={displayPiggies.createPiggies}
+            data={displayPiggies}
             columns={piggyColumns}
 
             pagination={paginationFactory({

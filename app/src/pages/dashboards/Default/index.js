@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component} from "react";
 import ApolloClient, { gql, InMemoryCache } from 'apollo-boost'
 import { ApolloProvider, Query } from 'react-apollo'
 
@@ -25,6 +25,8 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 })
 
+const endpoint = 'https://api-rinkeby.etherscan.io/api?module=proxy&action=eth_blockNumber&apikey=YourApiKeyToken'
+
 const PIGGY_QUERY = gql`
   query piggies {
     createPiggies {
@@ -43,6 +45,7 @@ const PIGGY_QUERY = gql`
       id
       from
       tokenId
+      startBlock
       startPrice
       reservePrice
       auctionLength
@@ -51,6 +54,26 @@ const PIGGY_QUERY = gql`
     }
   }
 `
+
+function groomValues(value) {
+  if (value.length < 19) {
+    return "$0." + value.slice(-18,-16)
+  }
+    return "$" + value.slice(0,value.length-18) + "." + value.slice(-18,-16)
+}
+
+
+function groomStyle(condition) {
+  return condition ? "European" : "American"
+}
+
+function groomDirection(condition) {
+  return condition ? "put" : "call"
+}
+
+function groomStrike(price) {
+  return "$" + price.slice(0,price.length-2) + "." + price.slice(-2)
+}
 
 function dataHandler(data) {
   let toReturn = data['createPiggies']
@@ -76,111 +99,139 @@ function dataHandler(data) {
   }
   return(toReturn)
 }
+
 let tokenMap
-let auctionTokens
-let createdTokens
 
-const Default = () => (
-  <ApolloProvider client={client}>
-    <Container fluid className="p-0">
-    <Query
-      query={PIGGY_QUERY}
-      variables={{
-      }}
-    >
-      {({ data, error, loading }) => {
-        console.log('data:', data)
-        if (data['createPiggies'] !== undefined && data['createPiggies'].length > 0) {
-          //let formatted = dataHandler(data)
-          //console.log('formatted: ', formatted)
-          createdTokens = data.createPiggies.map((item, i) => {
-            return (
-              {
-                token: item.tokenId,
-                details: {
-                  id: item.id,
-                  from: item.from,
-                  tokenId: item.tokenId,
-                  collateral: item.collateral,
-                  multiplier: item.lotSize,
-                  strike: item.strike,
-                  expiry: item.expiryBlock,
-                  isEuro: item.isEuro,
-                  isPut: item.isPut,
-                  rfp: item.RFP
+class Default extends Component {
+  constructor(props) {
+    super(props)
+
+    this.fetchLatestBlock = this.fetchLatestBlock.bind(this)
+
+    this.state = {
+      block: 0
+    };
+  }
+
+  async fetchLatestBlock() {
+    let rspData = await fetch(endpoint)
+    let jsonRsp = await rspData.json()
+
+    this.setState({
+        block: parseInt(jsonRsp.result, 16)
+      })
+  }
+
+  componentDidMount() {
+    this.fetchLatestBlock()
+
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.block !== prevState.block) {
+      //this.fetchLatestBlock()
+    }
+  }
+
+  render() {
+    
+    return (
+      <ApolloProvider client={client}>
+        <Container fluid className="p-0">
+        <Query
+          query={PIGGY_QUERY}
+          variables={{
+          }}
+        >
+          {({ data, error, loading }) => {
+            if (data['createPiggies'] !== undefined && data['createPiggies'].length > 0) {
+              //let formatted = dataHandler(data)
+              //console.log('formatted: ', formatted)
+              tokenMap = data.createPiggies.map((item, i) => {
+                let auction = data.startAuctions.filter(auction => {return (auction.tokenId === item.tokenId)})
+                if (auction.length > 0) {
+                  return (
+                    {
+                      id: item.id,
+                      from: item.from,
+                      tokenId: item.tokenId,
+                      collateral: groomValues(item.collateral),
+                      lotSize: item.lotSize,
+                      strike: groomStrike(item.strike),
+                      expiryBlock: item.expiryBlock,
+                      isEuro: groomStyle(item.isEuro),
+                      isPut: groomDirection(item.isPut),
+                      rfp: item.RFP,
+                      auctionFrom: auction[0].from,
+                      startBlock: auction[0].startBlock,
+                      startPrice: auction[0].startPrice,
+                      reservePrice: auction[0].reservePrice,
+                      auctionLength: auction[0].auctionLength,
+                      timeStep: auction[0].timeStep,
+                      priceStep: auction[0].priceStep,
+                      auctionExpiry: (parseInt(auction[0].startBlock) + parseInt(auction[0].auctionLength)).toString()
+                    }
+                  )
                 }
-              }
+                return (
+                  {
+                    id: item.id,
+                    from: item.from,
+                    tokenId: item.tokenId,
+                    collateral: item.collateral,
+                    multiplier: item.lotSize,
+                    strike: item.strike,
+                    expiry: item.expiryBlock,
+                    isEuro: item.isEuro,
+                    isPut: item.isPut,
+                    rfp: item.RFP
+                  }
+                )
+              })
+            }
+
+            return loading ? (
+              <Alerts />
+            ) : error ? (
+              <Alerts />
+            ) : (
+              <PiggyTable piggies={tokenMap} />
             )
-          })
+          }}
+        </Query>
 
-          tokenMap = createdTokens.map(item => {
-            if (data.startAuctions.tokenId === )
-          })
-
-          auctionTokens = data.startAuctions.map((item, i) => {
-            let token = createdTokens.find((created) => {
-              return (created.token === item.tokenId)
-            })
-            return (
-              {
-                token: item.tokenId,
-                details: {
-                  details: token.details
-                },
-                auction: {
-                  from: item.from,
-                  startBlock: item.startBlock,
-                  startPrice: item.startPrice,
-                  reservePrice: item.reservePrice,
-                  auctionLength: item.auctionLength,
-                  timeStep: item.timeStep,
-                  priceStep: item.priceStep
-                }
-              }
-            )
-          })
-        }
-
-        return loading ? (
-          <Alerts />
-        ) : error ? (
-          <Alerts />
-        ) : (
-          <PiggyTable piggies={createdTokens} />
-        )
-      }}
-    </Query>
-
-      {/*
-      <Row>
-        <Col lg="8" className="d-flex">
-          <LineChart />
-        </Col>
-        <Col lg="4" className="d-flex">
-          <Feed />
-        </Col>
-      </Row>
-      <Row>
-        <Col lg="6" xl="4" className="d-flex">
-          <Calendar />
-        </Col>
-        <Col lg="6" xl="4" className="d-flex">
-          <PieChart />
-        </Col>
-        <Col lg="6" xl="4" className="d-flex">
-          <Appointments />
-        </Col>
-      </Row>
-      <Row>
-        <Col lg="6" xl="8" className="d-flex">
-          <Projects />
-        </Col>
-        <Col lg="6" xl="4" className="d-flex">
-          <BarChart />
-        </Col>
-      </Row> */}
-    </Container>
-  </ApolloProvider>
-);
+          {/*
+          <Row>
+            <Col lg="8" className="d-flex">
+              <LineChart />
+            </Col>
+            <Col lg="4" className="d-flex">
+              <Feed />
+            </Col>
+          </Row>
+          <Row>
+            <Col lg="6" xl="4" className="d-flex">
+              <Calendar />
+            </Col>
+            <Col lg="6" xl="4" className="d-flex">
+              <PieChart />
+            </Col>
+            <Col lg="6" xl="4" className="d-flex">
+              <Appointments />
+            </Col>
+          </Row>
+          <Row>
+            <Col lg="6" xl="8" className="d-flex">
+              <Projects />
+            </Col>
+            <Col lg="6" xl="4" className="d-flex">
+              <BarChart />
+            </Col>
+          </Row> */}
+        </Container>
+      </ApolloProvider>
+    )
+  }
+}
 
 export default Default;

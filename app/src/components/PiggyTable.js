@@ -61,12 +61,14 @@ class PiggyTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      table: [],
     };
   }
 
   componentDidMount() {
-
+    this.setState({
+      table: this.props.piggies
+    })
   }
 
   render() {

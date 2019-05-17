@@ -1,6 +1,12 @@
-import React from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import { toggleSidebar } from "../redux/actions/sidebarActions";
+import  { bindActionCreators }    from  'redux'
+
+import { toggleSidebar } from "../redux/actions/sidebarActions"; //was in the onClick
+
+// import redux actions
+import * as tokenActionCreators from  '../redux/actions/tokenActions';
+import * as toggleActionCreators from '../redux/actions/sidebarActions'
 
 import {
   Row,
@@ -134,170 +140,221 @@ const NavbarDropdownItem = ({ icon, title, description, time, spacing }) => (
   </ListGroupItem>
 );
 
-const NavbarComponent = ({ dispatch }) => {
-  return (
-    <Navbar color="white" light expand>
-      <span
-        className="sidebar-toggle d-flex mr-2"
-        onClick={() => {
-          dispatch(toggleSidebar());
-        }}
-      >
-        <i className="hamburger align-self-center" />
-      </span>
+class NavbarComponent extends Component {
+  constructor(props) {
+    super(props)
 
-      <Form inline>
-        <Input
-          type="text"
-          placeholder="Search projects..."
-          aria-label="Search"
-          className="form-control-no-border mr-sm-2"
-        />
-      </Form>
+    this.state = {
 
-      <Collapse navbar>
-        <Nav className="ml-auto" navbar>
-          <NavbarDropdown
-            header="New Messages"
-            footer="Show all messages"
-            icon={MessageCircle}
-            count={messages.length}
-            showBadge
-          >
-            {messages.map((item, key) => {
-              return (
-                <NavbarDropdownItem
-                  key={key}
-                  icon={
-                    <img
-                      className="avatar img-fluid rounded-circle"
-                      src={item.avatar}
-                      alt={item.name}
-                    />
-                  }
-                  title={item.name}
-                  description={item.description}
-                  time={item.time}
-                  spacing
-                />
-              );
-            })}
-          </NavbarDropdown>
+    };
+  }
 
-          <NavbarDropdown
-            header="New Notifications"
-            footer="Show all notifications"
-            icon={BellOff}
-            count={notifications.length}
-          >
-            {notifications.map((item, key) => {
-              let icon = <Bell size={18} className="text-warning" />;
+  render() {
+    return (
+      <Navbar color="white" light expand>
+        <span
+          className="sidebar-toggle d-flex mr-2"
+          onClick={() => {
+            this.props.actions.toggleActions.toggleSidebar()
+          }}
+        >
+          <i className="hamburger align-self-center" />
+        </span>
 
-              if (item.type === "important") {
-                icon = <AlertCircle size={18} className="text-danger" />;
-              }
+        <Form inline>
+          <Input
+            type="text"
+            placeholder="Search piggies..."
+            aria-label="Search"
+            className="form-control-no-border mr-sm-2"
+          />
+        </Form>
 
-              if (item.type === "login") {
-                icon = <Home size={18} className="text-primary" />;
-              }
+        <Collapse navbar>
+          <Nav className="ml-auto" navbar>
+          Current Block: {this.props.currentBlock}
+          {/*
+            <NavbarDropdown
+              header="New Messages"
+              footer="Show all messages"
+              icon={MessageCircle}
+              count={messages.length}
+              showBadge
+            >
+              {messages.map((item, key) => {
+                return (
+                  <NavbarDropdownItem
+                    key={key}
+                    icon={
+                      <img
+                        className="avatar img-fluid rounded-circle"
+                        src={item.avatar}
+                        alt={item.name}
+                      />
+                    }
+                    title={item.name}
+                    description={item.description}
+                    time={item.time}
+                    spacing
+                  />
+                );
+              })}
+            </NavbarDropdown>
+            */}
 
-              if (item.type === "request") {
-                icon = <UserPlus size={18} className="text-success" />;
-              }
+            {/*
+            <NavbarDropdown
+              header="New Notifications"
+              footer="Show all notifications"
+              icon={BellOff}
+              count={notifications.length}
+            >
+              {notifications.map((item, key) => {
+                let icon = <Bell size={18} className="text-warning" />;
 
-              return (
-                <NavbarDropdownItem
-                  key={key}
-                  icon={icon}
-                  title={item.title}
-                  description={item.description}
-                  time={item.time}
-                />
-              );
-            })}
-          </NavbarDropdown>
+                if (item.type === "important") {
+                  icon = <AlertCircle size={18} className="text-danger" />;
+                }
 
-          <UncontrolledDropdown nav inNavbar className="mr-2">
-            <DropdownToggle nav caret className="nav-flag">
-              <img src={usFlag} alt="English" />
-            </DropdownToggle>
-            <DropdownMenu right>
-              <DropdownItem>
-                <img
-                  src={usFlag}
-                  alt="English"
-                  width="20"
-                  className="align-middle mr-1"
-                />
-                <span className="align-middle">English</span>
-              </DropdownItem>
-              <DropdownItem>
-                <img
-                  src={esFlag}
-                  alt="Spanish"
-                  width="20"
-                  className="align-middle mr-1"
-                />
-                <span className="align-middle">Spanish</span>
-              </DropdownItem>
-              <DropdownItem>
-                <img
-                  src={deFlag}
-                  alt="German"
-                  width="20"
-                  className="align-middle mr-1"
-                />
-                <span className="align-middle">German</span>
-              </DropdownItem>
-              <DropdownItem>
-                <img
-                  src={nlFlag}
-                  alt="Dutch"
-                  width="20"
-                  className="align-middle mr-1"
-                />
-                <span className="align-middle">Dutch</span>
-              </DropdownItem>
-            </DropdownMenu>
-          </UncontrolledDropdown>
+                if (item.type === "login") {
+                  icon = <Home size={18} className="text-primary" />;
+                }
 
-          <UncontrolledDropdown nav inNavbar>
-            <span className="d-inline-block d-sm-none">
-              <DropdownToggle nav caret>
-                <Settings size={18} className="align-middle" />
+                if (item.type === "request") {
+                  icon = <UserPlus size={18} className="text-success" />;
+                }
+
+                return (
+                  <NavbarDropdownItem
+                    key={key}
+                    icon={icon}
+                    title={item.title}
+                    description={item.description}
+                    time={item.time}
+                  />
+                );
+              })}
+            </NavbarDropdown>
+            */}
+
+            {/*
+            <UncontrolledDropdown nav inNavbar className="mr-2">
+              <DropdownToggle nav caret className="nav-flag">
+                <img src={usFlag} alt="English" />
               </DropdownToggle>
-            </span>
-            <span className="d-none d-sm-inline-block">
-              <DropdownToggle nav caret>
-                <img
-                  src={avatar1}
-                  className="avatar img-fluid rounded-circle mr-1"
-                  alt="Chris Wood"
-                />
-                <span className="text-dark">Chris Wood</span>
-              </DropdownToggle>
-            </span>
-            <DropdownMenu right>
-              <DropdownItem>
-                <User size={18} className="align-middle mr-2" />
-                Profile
-              </DropdownItem>
-              <DropdownItem>
-                <PieChart size={18} className="align-middle mr-2" />
-                Analytics
-              </DropdownItem>
-              <DropdownItem divider />
-              <DropdownItem>Settings & Privacy</DropdownItem>
-              <DropdownItem>Help</DropdownItem>
-              <DropdownItem>Sign out</DropdownItem>
-            </DropdownMenu>
-          </UncontrolledDropdown>
-        </Nav>
-      </Collapse>
-    </Navbar>
-  );
-};
+              <DropdownMenu right>
+                <DropdownItem>
+                  <img
+                    src={usFlag}
+                    alt="English"
+                    width="20"
+                    className="align-middle mr-1"
+                  />
+                  <span className="align-middle">English</span>
+                </DropdownItem>
+                <DropdownItem>
+                  <img
+                    src={esFlag}
+                    alt="Spanish"
+                    width="20"
+                    className="align-middle mr-1"
+                  />
+                  <span className="align-middle">Spanish</span>
+                </DropdownItem>
+                <DropdownItem>
+                  <img
+                    src={deFlag}
+                    alt="German"
+                    width="20"
+                    className="align-middle mr-1"
+                  />
+                  <span className="align-middle">German</span>
+                </DropdownItem>
+                <DropdownItem>
+                  <img
+                    src={nlFlag}
+                    alt="Dutch"
+                    width="20"
+                    className="align-middle mr-1"
+                  />
+                  <span className="align-middle">Dutch</span>
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+            */}
 
-export default connect(store => ({
+            {/*
+            <UncontrolledDropdown nav inNavbar>
+              <span className="d-inline-block d-sm-none">
+                <DropdownToggle nav caret>
+                  <Settings size={18} className="align-middle" />
+                </DropdownToggle>
+              </span>
+              <span className="d-none d-sm-inline-block">
+                <DropdownToggle nav caret>
+                  <img
+                    src={avatar1}
+                    className="avatar img-fluid rounded-circle mr-1"
+                    alt="Chris Wood"
+                  />
+                  <span className="text-dark">Chris Wood</span>
+                </DropdownToggle>
+              </span>
+              <DropdownMenu right>
+                <DropdownItem>
+                  <User size={18} className="align-middle mr-2" />
+                  Profile
+                </DropdownItem>
+                <DropdownItem>
+                  <PieChart size={18} className="align-middle mr-2" />
+                  Analytics
+                </DropdownItem>
+                <DropdownItem divider />
+                <DropdownItem>Settings & Privacy</DropdownItem>
+                <DropdownItem>Help</DropdownItem>
+                <DropdownItem>Sign out</DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+            */}
+
+          </Nav>
+        </Collapse>
+      </Navbar>
+    )
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: {
+      tokenActions : bindActionCreators(tokenActionCreators, dispatch),
+      toggleActions: bindActionCreators(toggleActionCreators, dispatch)
+    }
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+    auctionAll: state.filters.isAuctionAll,
+    forSale: state.filters.isAuctionForSale,
+    notForSale: state.filters.isAuctionNotForSale,
+
+    directionAll: state.filters.isPutCallAll,
+    putOnly: state.filters.isPutOnly,
+    callOnly: state.filters.isCallOnly,
+
+    expiryAll: state.filters.isExpiryAll,
+    onlyExpired: state.filters.isExpiredOnly,
+    notExpired: state.filters.isNotExpired,
+
+    currentBlock: state.chainUtils.currentBlock,
+    tokenData: state.tokenMapping.tokenMap
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavbarComponent);
+/**
+store => ({
   app: store.app
-}))(NavbarComponent);
+})
+**/

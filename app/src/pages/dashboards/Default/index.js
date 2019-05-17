@@ -39,7 +39,7 @@ class Default extends Component {
   }
 
   render() {
-    
+
     return (
       <Container fluid className="p-0">
         <PiggyTable piggies={this.props.tokenData} />

@@ -11,6 +11,7 @@ import { faCircle } from "@fortawesome/free-solid-svg-icons";
 
 import routes from "../routes/index";
 import avatar from "../assets/img/avatars/avatar.jpg";
+import piggy from '../assets/img/smartpiggies/piggieface_logo.png'
 
 import Filters from "../components/Filters.js"
 
@@ -122,8 +123,10 @@ class Sidebar extends React.Component {
         <div className="sidebar-content">
           <PerfectScrollbar>
             <a className="sidebar-brand" href="/">
-              <Box className="align-middle text-primary mr-2" size={24} />{" "}
-              <span className="align-middle">Charcuterie</span>
+              {/*<Box className="align-middle text-primary mr-2" size={24} />{" "}*/}
+              <img src={piggy} alt="pig" />{"  "}
+              <span className="align-middle">Charcuterie</span>{" "}
+              <span className="align-middle">[Rinkeby]</span>
             </a>
 
             <div className='sidebar-header'>

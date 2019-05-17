@@ -21,8 +21,7 @@ class SetTable extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.queryData !== prevProps.queryData) {
-    }
+
   }
 
   render() {

@@ -10,7 +10,7 @@ import TokenData from "./components/TokenData"
 const App = () => (
   <Provider store={store}>
     <CurrentBlock />
-    <TokenData/ >
+    <TokenData />
     <Routes />
     <ReduxToastr
       timeOut={5000}

@@ -57,8 +57,6 @@ const piggyColumns = [
   }
 ];
 
-let table
-
 class PiggyTable extends Component {
   constructor(props) {
     super(props)

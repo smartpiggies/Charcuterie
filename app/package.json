@@ -15,7 +15,10 @@
     "build": "npm-run-all -p build:*"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "parserOptions": {
+      "ecmaVersion": 2017
+      }
   },
   "browserslist": [
     "> 0.25%",

@@ -3,10 +3,8 @@ import { connect } from "react-redux";
 import  { bindActionCreators }    from  'redux'
 import ApolloClient, { gql, InMemoryCache } from 'apollo-boost'
 import { ApolloProvider, Query } from 'react-apollo'
-import { Container } from "reactstrap";
 
 // import components
-//import Alerts from "../../ui-elements/Alerts"
 import SetTable from "../components/SetTable"
 
 // import redux actions
@@ -73,7 +71,10 @@ function groomStrike(price) {
 
 class TokenData extends Component {
   constructor(props) {
-    super(props);
+    super(props)
+
+    this.getPrice = this.getPrice.bind(this)
+
     this.state = {
       tokenMapLength: 0,
       counter: 0,
@@ -86,6 +87,17 @@ class TokenData extends Component {
 
   componentDidUpdate(prevProps, prevState) {
 
+  }
+
+  getPrice(startBlock, auctionLength, startPrice, priceStep, timeStep, reservePrice) {
+    let currentBlock = this.props.currentBlock
+    if (currentBlock < (startBlock + auctionLength)) {
+
+      return (currentBlock - startBlock)  * priceStep / timeStep
+
+    } else {
+      return reservePrice
+    }
   }
 
   render() {
@@ -120,7 +132,13 @@ class TokenData extends Component {
                       auctionLength: auction[0].auctionLength,
                       timeStep: auction[0].timeStep,
                       priceStep: auction[0].priceStep,
-                      auctionExpiry: (parseInt(auction[0].startBlock) + parseInt(auction[0].auctionLength)).toString()
+                      auctionExpiry: (parseInt(auction[0].startBlock) + parseInt(auction[0].auctionLength)).toString(),
+                      auctionPrice: groomValues(this.getPrice(parseInt(auction[0].startBlock),
+                        (parseInt(auction[0].startBlock) + parseInt(auction[0].auctionLength)),
+                        parseInt(auction[0].startPrice),
+                        parseInt(auction[0].priceStep),
+                        parseInt(auction[0].timeStep),
+                        parseInt(auction[0].reservePrice)).toString())
                     }
                   )
                 }

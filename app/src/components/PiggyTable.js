@@ -46,7 +46,7 @@ const piggyColumns = [
     sort: true
   },
   {
-    dataField: "price",
+    dataField: "auctionPrice",
     text: "Price",
     sort: true
   },
@@ -57,18 +57,24 @@ const piggyColumns = [
   }
 ];
 
+let table
+
 class PiggyTable extends Component {
   constructor(props) {
-    super(props);
+    super(props)
+
     this.state = {
-      table: [],
-    };
+
+    }
   }
 
   componentDidMount() {
-    this.setState({
-      table: this.props.piggies
-    })
+
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.piggies !== prevProps.piggies) {
+
+    }
   }
 
   render() {
@@ -85,70 +91,6 @@ class PiggyTable extends Component {
       displayData = displayPiggies
     }
 
-    /**
-    displayData = tableData.map(item => {
-      console.log("displayData")
-      if (this.props.putOnly) {
-        return (
-          item.putcall === "put" ? item :   {
-              id: "",
-              putcall: "",
-              strike: 0,
-              collateral: 0,
-              multiplier: 0,
-              piggyExpiry: "",
-              price: '-',
-              auctionExpiry: '-'
-            }
-        )
-      } else if (this.props.callOnly) {
-        return (
-          item.putcall === "call" ? item : {
-              id: "",
-              putcall: "",
-              strike: 0,
-              collateral: 0,
-              multiplier: 0,
-              piggyExpiry: "",
-              price: '-',
-              auctionExpiry: '-'
-            }
-        )
-      } else {
-        return (
-          item
-        )
-      }
-    })
-    **/
-    let expandRow
-    if (this.state.isMounted) {
-      expandRow = {
-        renderer: row => (
-          <div>
-            <p>{`This Expand row is belong to "${row.id}"`}</p>
-            <p>
-              You can render anything here, also you can add additional data on every row object.
-            </p>
-          </div>
-        ),
-        showExpandColumn: true,
-        expandHeaderColumnRenderer: ({ isAnyExpands }) =>
-          isAnyExpands ? (
-            <MinusCircle width={16} height={16} />
-
-          ) : (
-            <PlusCircle width={16} height={16} />
-          ),
-        expandColumnRenderer: ({ expanded }) =>
-          expanded ? (
-            <MinusCircle width={16} height={16} />
-          ) : (
-            <PlusCircle width={16} height={16} />
-          )
-      };
-    }
-
     return (
 
       <Card>
@@ -159,18 +101,18 @@ class PiggyTable extends Component {
           </h6>
         </CardHeader>
         <CardBody>
-          <BootstrapTable
-            bootstrap4
-            bordered={false}
-            keyField="id"
-            data={displayData}
-            columns={piggyColumns}
+        <BootstrapTable
+          bootstrap4
+          bordered={false}
+          keyField="id"
+          data={displayData}
+          columns={piggyColumns}
 
-            pagination={paginationFactory({
-              sizePerPage: 5,
-              sizePerPageList: [5, 10, 25, 50]
-            })}
-          />
+          pagination={paginationFactory({
+            sizePerPage: 5,
+            sizePerPageList: [5, 10, 25, 50]
+          })}
+        />
         </CardBody>
       </Card>
     )

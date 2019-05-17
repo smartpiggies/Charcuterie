@@ -22,12 +22,10 @@ class SetTable extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.queryData !== prevProps.queryData) {
-      
     }
   }
 
   render() {
-    console.log("setTable: ", this.props.queryData)
     return (
       null
     )

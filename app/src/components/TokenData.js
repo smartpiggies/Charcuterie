@@ -126,12 +126,12 @@ class TokenData extends Component {
                       id: item.id,
                       from: item.from,
                       tokenId: item.tokenId,
-                      collateral: item.collateral,
-                      multiplier: item.lotSize,
-                      strike: item.strike,
-                      expiry: item.expiryBlock,
-                      isEuro: item.isEuro,
-                      isPut: item.isPut,
+                      collateral: groomValues(item.collateral),
+                      lotSize: item.lotSize,
+                      strike: groomStrike(item.strike),
+                      expiryBlock: item.expiryBlock,
+                      isEuro: groomStyle(item.isEuro),
+                      isPut: groomDirection(item.isPut),
                       rfp: item.RFP
                     }
                   )

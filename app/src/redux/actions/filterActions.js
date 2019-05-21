@@ -53,3 +53,21 @@ export function showNotExpired() {
     type: types.EXPIRY_FILTERS_NOT_EXPIRED
   };
 }
+
+export function showAllStyles() {
+  return {
+    type: types.STYLES_FILTERS_ALL
+  };
+}
+
+export function showAmerican() {
+  return {
+    type: types.STYLES_FILTERS_AMERICAN
+  };
+}
+
+export function showEuropean() {
+  return {
+    type: types.STYLES_FILTERS_EUROPEAN
+  };
+}

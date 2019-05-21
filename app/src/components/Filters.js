@@ -42,6 +42,12 @@ class Filters extends React.Component {
   render() {
 
     const { filters } = this.props.actions
+    const defaultValues = {
+      AuctionsRadio: 'AllAuctions',
+      DirectionsRadio: 'AllDirections',
+      ExpirationRadio: 'AllExpires',
+      StyleRadio: 'AllStyles',
+    }
 
     return (
       <Container fluid className="sidebar-content">
@@ -51,7 +57,7 @@ class Filters extends React.Component {
             <CardTitle tag="h5">Filters</CardTitle>
           </CardHeader> */}
           <CardBody>
-            <AvForm>
+            <AvForm model={defaultValues}>
 
 
               {/* Radios */}
@@ -74,13 +80,14 @@ class Filters extends React.Component {
                   onClick={() => filters.showNotForSale()}
                 />
               </AvRadioGroup>
-
+              <hr />
               <h4>Put / Call Filters</h4>
               <AvRadioGroup name="DirectionsRadio" required>
                 <AvRadio
                   customInput label="All Directions"
                   value="AllDirections"
                   onClick={() => filters.showAllPutCall()}
+                  checked
                 />
                 <AvRadio
                   customInput label="Puts Only"
@@ -93,7 +100,7 @@ class Filters extends React.Component {
                   onClick={() => filters.showOnlyCalls()}
                 />
               </AvRadioGroup>
-
+              <hr />
               <h4>Expiry Filters</h4>
               <AvRadioGroup name="ExpirationRadio" required>
                 <AvRadio
@@ -104,28 +111,33 @@ class Filters extends React.Component {
                 <AvRadio
                   customInput label="Only non-expired"
                   value="Only non-expired"
-                  onClick={() => filters.showExpired()}
+                  onClick={() => filters.showNotExpired()}
                 />
                 <AvRadio
                   customInput label="Only expired"
                   value="Only expired"
-                  onClick={() => filters.showNotExpired()}
+                  onClick={() => filters.showExpired()}
                 />
               </AvRadioGroup>
-
               <hr />
-
-              {/* checkboxes */}
-
-              <h4>Custom Checkboxes</h4>
-              <AvCheckboxGroup name="checkboxCustomInputExample" required>
-                <AvCheckbox customInput label="Bulbasaur" value="Bulbasaur" />
-                <AvCheckbox customInput label="Squirtle" value="Squirtle" />
-                <AvCheckbox customInput label="Charmander" value="Charmander" />
-                <AvCheckbox customInput label="Pikachu" value="Pikachu" disabled />
-              </AvCheckboxGroup>
-
-              <hr />
+              <h4>Style Filters</h4>
+              <AvRadioGroup name="StyleRadio" required>
+                <AvRadio
+                  customInput label="All Styles"
+                  value="AllStyles"
+                  onClick={() => filters.showAllStyles()}
+                />
+                <AvRadio
+                  customInput label="Only American"
+                  value="Only American"
+                  onClick={() => filters.showAmerican()}
+                />
+                <AvRadio
+                  customInput label="Only European"
+                  value="Only European"
+                  onClick={() => filters.showEuropean()}
+                />
+              </AvRadioGroup>
             </AvForm>
           </CardBody>
         </Card>

@@ -9,7 +9,10 @@ const initialState = {
   isCallOnly: false,
   isExpiryAll: true,
   isExpiredOnly: false,
-  isNotExpired: false
+  isNotExpired: false,
+  isStylesAll: true,
+  isStylesAmerican: false,
+  isStylesEuropean: false
 };
 
 export default function reducer(state = initialState, actions) {
@@ -76,6 +79,27 @@ export default function reducer(state = initialState, actions) {
         isExpiryAll: false,
         isExpiredOnly: false,
         isNotExpired: true
+      }
+    case types.STYLES_FILTERS_ALL:
+      return {
+        ...state,
+        isStylesAll: true,
+        isStylesAmerican: false,
+        isStylesEuropean: false
+      }
+    case types.STYLES_FILTERS_AMERICAN:
+      return {
+        ...state,
+        isStylesAll: false,
+        isStylesAmerican: true,
+        isStylesEuropean: false
+      }
+    case types.STYLES_FILTERS_EUROPEAN:
+      return {
+        ...state,
+        isStylesAll: false,
+        isStylesAmerican: false,
+        isStylesEuropean: true
       }
 
     default:

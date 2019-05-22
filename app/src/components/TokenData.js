@@ -38,12 +38,14 @@ const PIGGY_QUERY = gql`
       isEuro
       isPut
       RFP
+      isOnAuction
       startBlock
       startPrice
       reservePrice
       auctionLength
       timeStep
       priceStep
+      auctionDuration
     }
   }
 `
@@ -70,11 +72,10 @@ function groomStrike(price) {
   return "$" + price.slice(0,price.length-2) + "." + price.slice(-2)
 }
 
-function getPrice(startBlock, auctionLength, startPrice, priceStep, timeStep, reservePrice, latestBlock) {
+function getPrice(startBlock, auctionDuration, startPrice, priceStep, timeStep, reservePrice, latestBlock) {
   let currentBlock = parseInt(latestBlock)
   let startBlockInt = parseInt(startBlock)
-  let auctionDuration = startBlockInt + parseInt(auctionLength)
-  if (currentBlock < auctionDuration) {
+  if (currentBlock < parseInt(auctionDuration)) {
     if (startPrice === reservePrice) {
       return reservePrice
     }
@@ -134,78 +135,8 @@ class TokenData extends Component {
             pollInterval={7000}
           >
             {({ data, error, loading }) => {
-              /**
-              if (data['createPiggies'] !== undefined && data['createPiggies'].length > 0) {
-                tokenMap = data.createPiggies.map((item, i) => {
-                  let auction = data.startAuctions.filter(auction => {return (auction.tokenId === item.tokenId)})
-                  if (auction.length > 0) {
-                    return (
-                      {
-                        id: item.id,
-                        from: item.from,
-                        tokenId: item.tokenId,
-                        collateral: groomValues(item.collateral),
-                        lotSize: item.lotSize,
-                        strike: groomStrike(item.strike),
-                        expiryBlock: groomBlocks(item.expiryBlock, this.props.currentBlock),
-                        isExpired: parseInt(item.expiryBlock) < parseInt(this.props.currentBlock),
-                        isEuro: groomStyle(item.isEuro),
-                        isPut: groomDirection(item.isPut),
-                        rfp: item.RFP,
-                        isOnAuction: true,
-                        auctionFrom: auction[0].from,
-                        startBlock: auction[0].startBlock,
-                        startPrice: auction[0].startPrice,
-                        reservePrice: auction[0].reservePrice,
-                        auctionLength: auction[0].auctionLength,
-                        timeStep: auction[0].timeStep,
-                        priceStep: auction[0].priceStep,
-                        auctionExpiry: groomBlocks((parseInt(auction[0].startBlock) + parseInt(auction[0].auctionLength)).toString(), this.props.currentBlock),
-                        auctionPrice: groomValues(getPrice(auction[0].startBlock,
-                            auction[0].auctionLength,
-                            auction[0].startPrice,
-                            auction[0].priceStep,
-                            auction[0].timeStep,
-                            auction[0].reservePrice,
-                            this.props.currentBlock
-                          )
-                        )
-                      }
-                    )
-                  }
-                  return (
-                    {
-                      id: item.id,
-                      from: item.from,
-                      tokenId: item.tokenId,
-                      collateral: groomValues(item.collateral),
-                      lotSize: item.lotSize,
-                      strike: groomStrike(item.strike),
-                      expiryBlock: groomBlocks(item.expiryBlock, this.props.currentBlock),
-                      isExpired: parseInt(item.expiryBlock) < parseInt(this.props.currentBlock),
-                      isEuro: groomStyle(item.isEuro),
-                      isPut: groomDirection(item.isPut),
-                      rfp: item.RFP,
-                      isOnAuction: false,
-                    }
-                  )
-                })
-              }
-              **/
-              /**
-              return loading ? (
-                "Loading"
-              ) : error ? (
-                "Something went wrong"
-              ) : (
-                // write tokenMap to redux
-                <SetTable queryData={tokenMap} />
-              )
-            }}
-            **/
             if (data.piggies !== undefined && data.piggies.length > 0) {
               tokenMap = data.piggies.map((item, i) => {
-                  let auctionDuration = parseInt(item.startBlock) + parseInt(item.auctionLength)
                   return (
                     {
                       id: item.id,
@@ -218,16 +149,17 @@ class TokenData extends Component {
                       isEuro: groomStyle(item.isEuro),
                       isPut: groomDirection(item.isPut),
                       rfp: item.RFP,
-                      isOnAuction: item.startblock === null ? false : parseInt(this.props.currentBlock) < auctionDuration ? true : false,
+                      isOnAuction: item.isOnAuction,
                       startBlock: item.startBlock,
                       startPrice: item.startPrice,
                       reservePrice: item.reservePrice,
                       auctionLength: item.auctionLength,
                       timeStep: item.timeStep,
                       priceStep: item.priceStep,
-                      auctionExpiry: item.startBlock === null ? "-" : groomBlocks(auctionDuration.toString(), this.props.currentBlock),
+                      auctionDuration: item.auctionDuration,
+                      auctionExpiry: item.startBlock === null ? "-" : groomBlocks(item.auctionDuration, this.props.currentBlock),
                       auctionPrice: item.startBlock === null ? "-" : groomValues(getPrice(item.startBlock,
-                          item.auctionLength,
+                          item.auctionDuration,
                           item.startPrice,
                           item.priceStep,
                           item.timeStep,

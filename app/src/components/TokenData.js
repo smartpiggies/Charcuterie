@@ -23,8 +23,8 @@ const client = new ApolloClient({
 
 let tokenMap = []
 
-const blockDays = parseInt(5760)
-const blockHours = parseInt(240) // 4 blocks per minute * 60 minutes per hour
+const blockDays = new BigNumber(5760)
+const blockHours = new BigNumber(240) // 4 blocks per minute * 60 minutes per hour
 
 const PIGGY_QUERY = gql`
   query piggies {
